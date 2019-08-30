@@ -1,0 +1,93 @@
+MIT (videos) - Breadth-First Search
+
+Applications:
+*Web applications (Google goes breath-first)
+*Social networking (FB uses friend finder)
+*Network broadcast (Broadcast a message, graph exploration problem)
+*Garbage collection (if there’s some data that is unreachable, you can throw it away and regain memory). This is done with breadth-first search.
+*Model checking (have finite model of a piece of code, circuit, chip, prove that it does what it’s supposed to do. The graph displays all the states you can reach and its properties).
+*Check mathematical conjectures (breadth-first search through an entire graph of states)
+*Solving puzzles
+
+Pocket Cube: 2x2x2
+* Configuration graph (space): 
+    * Vertex for each possible state of the cube
+        * 264 million of vertices
+        * # vertices = 8! * 3^8 = 265,539,520
+    * Edge for each possible move
+    * Diameter of the graph, how many moves do you need, you always follow the best path. The worst case is 11 for 2x2x2. For 3x3x3 is 20. 
+
+
+To solve a Rubik’s cube of n * n * n, the answer is Theta(n^2 / lg n)
+----
+Graph Representation
+
+One standard representation, and a bunch of variations. The standard representation is called Adjacency lists. 
+
+Array Adj of |V| - linked lists
+
+The array is indexed by a vertex u E V. Adj[u]. Adj[u] styres u’s neighbors.
+
+Adj[b] = {a, c}
+Adj[a] = {c}
+Adj[c] = {b}
+
+Different ways to implement adjacency lists. 
+
+Adj could be a hash table/array that has the value of linked lists.
+
+Could also be done in an object-oriented. You could make the vertices to have neighbors, like this:
+
+v.neighbors = Adj[v]
+
+If we’re dealing with only a graph, the object-oriented version is better. If it is multiple graphs, then the adjacency lists version is better/
+
+---- 
+
+Implicit represented graphs:
+= Adj[u] is a function
+= v.neighbors() is a method
+
+It’s not stored there explicitly, whenever I need I call the function and it computes what I want. This uses v space, it uses less space. 
+
+Speaking of space, ignoring the implicit representation, how much space the adjacency lists require. Theta(V + E). Bread and butter of our graph algorithms, they achieve most V + e. It’s optimal. Number of vertices and number of edges.
+
+That time is what I need just to look at the graph.
+
+-------- 
+
+BREATH-FIRST SEARCH ALGORITHM
+
+You start at some node, you look at all the nodes that can get you from there, keep going until the end. These will explore all the vertices that are reachable from node. This is not trivial because there are some edges that can go back IF they are directed. If they are undirected, then it is fine. 
+
+= Visit all nodes/vertices reachable from given s <E V>
+= O(V + E) time
+= Look at nodes that reachable in 0 moves, 1 moves , 2 moves, 3 moves… and so on, until we run out of graph.
+= Be careful to avoid duplicates. We want to avoid revisiting vertices, if we did, we would spend infinite time as long as there is still one cycle. 
+
+BFS(s, Adj):
+    level = {s: empty}
+    parent = {s: None}
+    i = 1
+    frontier = [s] // what we just reached on the previous level.  Level i - 1
+    while frontier:
+        next = [ ]<- level I what you can reach in I movies
+        for u in frontier:
+            for v in Adj[u]:
+                if v not in level:
+                    Level[v] = I
+                    parent[v] = u
+                    next.append(v)
+        frontier = next
+        i += 1
+
+Shortest paths
+= v <- parent[v]
+      <- parent[parent[v]]
+      <- ….
+      <- S
+
+Is a shortest path from s to v
+The length of the path (shortest means using the least edges), the length of v is the level of v.
+
+Hand-shaking lemma for directed graphs
